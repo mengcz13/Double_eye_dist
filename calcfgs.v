@@ -1,9 +1,9 @@
 module calcfgs(gdata, getfdata, get2f, clk, fsum, f2sum,
 					vector_xf, vector_xg, vector_y, change, startsig, work
-					f0, f1, f2, f3, f4, f5, f6, f7, f8, f9, f10, f11, f12, f13, f14, f15);
+					f0, f1, f2, f3, f4, f5, f6, f7, f8, f9, f10, f11, f12, f13, f14, f15, valid);
 	input clk, gdata, getfdata, get2f;
 	output f0, f1, f2, f3, f4, f5, f6, f7, f8, f9, f10, f11, f12, f13, f14, f15, fsum, f2sum;
-	output vector_xf, vector_xg, vector_y, work;
+	output vector_xf, vector_xg, vector_y, work, valid;
 	wire clk;
 	reg [10:0] fsum;
 	reg [13:0] f2sum;
@@ -24,7 +24,7 @@ module calcfgs(gdata, getfdata, get2f, clk, fsum, f2sum,
 	reg [15:0] change;
 	reg flag;
 	
-	parameter waiting1 = 3'b000, calcing = 3'b001, starting = 3'b010, waiting2 = 3'b011, waiting3 = 3'b100;
+	parameter waiting1 = 3'b000, calcing = 3'b001, starting = 3'b010, waiting2 = 3'b011, waiting3 = 3'b100, final = 3'b101;
 	parameter linestart = 3'b101;
 	initial
 	begin
@@ -47,6 +47,7 @@ module calcfgs(gdata, getfdata, get2f, clk, fsum, f2sum,
 			vector_xg <= 0;
 			fsum <= 0;
 			f2sum <= 0;
+			valid <= 0;
 		end 
 		else if (state == linestart)
 		begin
@@ -70,8 +71,7 @@ module calcfgs(gdata, getfdata, get2f, clk, fsum, f2sum,
 					vector_xg <= 0;
 					vector_xf <= 0;
 					vector_y <= 0;
-					valid <= 1;
-					next <= starting;
+					next <= final;
 				end
 				else
 				begin
@@ -119,16 +119,6 @@ module calcfgs(gdata, getfdata, get2f, clk, fsum, f2sum,
 			f13 <= f14;
 			f14 <= f15;
 			f15 <= getfdata;
-			if (flag == 0)
-			begin
-				fsum <= fsum + getfdata;
-				f2sum <= f2sum + get2f;
-			end
-			else
-			begin
-				fsum <= fsum;
-				f2sum <= f2sum;
-			end
 			case (count)
 				 0:change <= 16'b0000000000000001;
 				 1:change <= 16'b0000000000000010;
@@ -154,6 +144,21 @@ module calcfgs(gdata, getfdata, get2f, clk, fsum, f2sum,
 			next <= waiting3;
 			work <= 1;
 			valid <= 0;
+			if (flag == 0)
+			begin
+				fsum <= fsum + getfdata;
+				f2sum <= f2sum + get2f;
+			end
+			else
+			begin
+				fsum <= fsum;
+				f2sum <= f2sum;
+			end
+		end
+		else
+		begin
+			next <= starting;
+			valid <= 1;
 		end
 	end
 	

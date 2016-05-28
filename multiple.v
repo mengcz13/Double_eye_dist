@@ -1,5 +1,4 @@
-module multiple(in1, in2, out)
-begin
+module multiple(in1, in2, out);
 	input in1, in2;
 	output out;
 	wire [2:0] in1;
@@ -8,7 +7,7 @@ begin
 	
 	always@(in1 or in2)
 	begin
-		case ({in1, int2})
+		case ({in1, in2})
 			6'b000000:out <= 6'b000000;
 			6'b000001:out <= 6'b000000;
 			6'b000010:out <= 6'b000000;
@@ -76,4 +75,4 @@ begin
 			default:out <= 6'b000000;
 		endcase
 	end
-end
+endmodule

@@ -1,20 +1,20 @@
-module calcfgs(clk, fsum, f2sum, g2sum, gsum, fg, valid);
-	input clk;
-	output fsum, f2sum, g2sum, gsum, fg, valid;
+module calcfgs(gdata, getfdata, get2f, clk, fsum, f2sum,
+					vector_xf, vector_xg, vector_y, change, startsig, work,
+					f0, f1, f2, f3, f4, f5, f6, f7, f8, f9, f10, f11, f12, f13, f14, f15, valid, finalstart, update);
+	input clk, gdata, getfdata, get2f;
+	output f0, f1, f2, f3, f4, f5, f6, f7, f8, f9, f10, f11, f12, f13, f14, f15, fsum, f2sum, finalstart;
+	output vector_xf, vector_xg, vector_y, work, valid, startsig, change, update;
 	wire clk;
 	reg [10:0] fsum;
 	reg [13:0] f2sum;
-	wire [895:0] g2sum;
-	wire [703:0] gsum;
-	wire [895:0] fg;
-	reg valid;
+	reg valid, finalstart;
 
 	reg [3:0] state, next;
-	reg [3:0] vector_xf;
+	reg [6:0] vector_xf;
 	reg [6:0] vector_xg;
 	reg [3:0] vector_y;
 	
-	reg [2:0] fdata [0:15];
+	reg [2:0] f0, f1, f2, f3, f4, f5, f6, f7, f8, f9, f10, f11, f12, f13, f14, f15;
 	wire [2:0] gdata;
 	wire [2:0] getfdata;
 	wire [5:0] get2f;
@@ -23,13 +23,11 @@ module calcfgs(clk, fsum, f2sum, g2sum, gsum, fg, valid);
 	reg [3:0] count;
 	reg [15:0] change;
 	reg flag;
-	
-	wire [55:0] get_g2sum [0:15];
-	wire [45:0] get_gsum [0:15];
-	wire [55:0] get_fg [0:15];
-	
-	parameter waiting1 = 3'b000, calcing = 3'b001, starting = 3'b010, waiting2 = 3'b011, waiting3 = 3'b100;
-	parameter linestart = 3'b101;
+	reg [1:0] lyx;
+	reg update;
+	parameter waiting1 = 4'b0000, calcing = 4'b0001, starting = 4'b0010, waiting2 = 4'b0011, waiting3 = 4'b0100;
+	parameter linestart = 4'b0101, clearing = 4'b0110, finalcalc = 4'b0111;
+	parameter cout = 4'b1000;
 	initial
 	begin
 		work <= 0;
@@ -37,23 +35,33 @@ module calcfgs(clk, fsum, f2sum, g2sum, gsum, fg, valid);
 		next <= starting;
 		fsum <= 0;
 		f2sum <= 0;
-		valid <= 1;
+		valid <= 0;
+		finalstart <= 0;
+		update <= 0;
 	end
 	
 	always@ (posedge clk)
 	begin
 		if (state == starting)
 		begin
-			next <= linestart;
+			next <= clearing;
 			startsig <= 0;
 			vector_y <= 0;
 			vector_xf <= 0;
 			vector_xg <= 0;
 			fsum <= 0;
 			f2sum <= 0;
+			valid <= 0;
+			update <= 0;
 		end 
+		else if (state == clearing)
+		begin
+			next <= linestart;
+			startsig <= 1;
+		end
 		else if (state == linestart)
 		begin
+			startsig <= 0;
 			count <= 0;
 			next <= waiting1;
 			vector_xf <= 0;
@@ -74,8 +82,9 @@ module calcfgs(clk, fsum, f2sum, g2sum, gsum, fg, valid);
 					vector_xg <= 0;
 					vector_xf <= 0;
 					vector_y <= 0;
-					valid <= 1;
-					next <= starting;
+					next <= finalcalc;
+					lyx <= 0;
+					finalstart <= 1;
 				end
 				else
 				begin
@@ -102,37 +111,31 @@ module calcfgs(clk, fsum, f2sum, g2sum, gsum, fg, valid);
 				end
 			end
 			work <= 0;
+			if (count == 15)
+				count <= 0;
+			else
+				count <= count + 1;
 		end 
 		else if (state == waiting2)
 		begin
 			next <= calcing;
 			work <= 0;
-			fdata[0] <= fdata[1];
-			fdata[1] <= fdata[2];
-			fdata[2] <= fdata[3];
-			fdata[3] <= fdata[4];
-			fdata[4] <= fdata[5];
-			fdata[5] <= fdata[6];
-			fdata[6] <= fdata[7];
-			fdata[7] <= fdata[8];
-			fdata[8] <= fdata[9];
-			fdata[9] <= fdata[10];
-			fdata[10] <= fdata[11];
-			fdata[11] <= fdata[12];
-			fdata[12] <= fdata[13];
-			fdata[13] <= fdata[14];
-			fdata[14] <= fdata[15];
-			fdata[15] <= getfdata;
-			if (flag == 0)
-			begin
-				fsum <= fsum + getfdata;
-				f2sum <= f2sum + get2f;
-			end
-			else
-			begin
-				fsum <= fsum;
-				f2sum <= f2sum;
-			end
+			f0 <= f1;
+			f1 <= f2;
+			f2 <= f3;
+			f3 <= f4;
+			f4 <= f5;
+			f5 <= f6;
+			f6 <= f7;
+			f7 <= f8;
+			f8 <= f9;
+			f9 <= f10;
+			f10 <= f11;
+			f11 <= f12;
+			f12 <= f13;
+			f13 <= f14;
+			f14 <= f15;
+			f15 <= getfdata;
 			case (count)
 				 0:change <= 16'b0000000000000001;
 				 1:change <= 16'b0000000000000010;
@@ -158,67 +161,39 @@ module calcfgs(clk, fsum, f2sum, g2sum, gsum, fg, valid);
 			next <= waiting3;
 			work <= 1;
 			valid <= 0;
+			if (flag == 0)
+			begin
+				fsum <= fsum + getfdata;
+				f2sum <= f2sum + get2f;
+			end
+			else
+			begin
+				fsum <= fsum;
+				f2sum <= f2sum;
+			end
+		end
+		else if (state == finalcalc)
+		begin
+			if (lyx == 3)
+				next <= starting;
+			else
+				next <= calcing;
+			valid <= 0;
+			finalstart <= 0;
+			update <= 1;
+		end 
+		else
+		begin
+			update <= 0;
+			valid <= 1;
+			lyx <= lyx + 1;
+			next <= finalcalc;
 		end
 	end
 	
 	always@(negedge clk)
 	begin
-		if (state == starting)
-		begin
-			startsig <= 1;
-			state <= next;
-		end
-			state <= next;
+		state <= next;
 	end
 	
-	assign g2sum[55:0] = get_g2sum[0];
-	assign g2sum[111:56] = get_g2sum[1];
-	assign g2sum[167:112] = get_g2sum[2];
-	assign g2sum[223:168] = get_g2sum[3];
-	assign g2sum[279:224] = get_g2sum[4];
-	assign g2sum[335:280] = get_g2sum[5];
-	assign g2sum[391:336] = get_g2sum[6];
-	assign g2sum[447:392] = get_g2sum[7];
-	assign g2sum[503:448] = get_g2sum[8];
-	assign g2sum[559:504] = get_g2sum[9];
-	assign g2sum[615:560] = get_g2sum[10];
-	assign g2sum[671:616] = get_g2sum[11];
-	assign g2sum[727:672] = get_g2sum[12];
-	assign g2sum[783:728] = get_g2sum[13];
-	assign g2sum[839:784] = get_g2sum[14];
-	assign g2sum[895:840] = get_g2sum[15];
-	
-	assign gsum[43:0] = get_gsum[0];
-	assign gsum[87:44] = get_gsum[1];
-	assign gsum[131:88] = get_gsum[2];
-	assign gsum[175:132] = get_gsum[3];
-	assign gsum[219:176] = get_gsum[4];
-	assign gsum[263:220] = get_gsum[5];
-	assign gsum[307:264] = get_gsum[6];
-	assign gsum[351:308] = get_gsum[7];
-	assign gsum[395:352] = get_gsum[8];
-	assign gsum[439:396] = get_gsum[9];
-	assign gsum[483:440] = get_gsum[10];
-	assign gsum[527:484] = get_gsum[11];
-	assign gsum[571:528] = get_gsum[12];
-	assign gsum[615:572] = get_gsum[13];
-	assign gsum[659:616] = get_gsum[14];
-	assign gsum[703:660] = get_gsum[15];
-	
-	assign fg[55:0] = get_fg[0];
-	assign fg[111:56] = get_fg[1];
-	assign fg[167:112] = get_fg[2];
-	assign fg[223:168] = get_fg[3];
-	assign fg[279:224] = get_fg[4];
-	assign fg[335:280] = get_fg[5];
-	assign fg[391:336] = get_fg[6];
-	assign fg[447:392] = get_fg[7];
-	assign fg[503:448] = get_fg[8];
-	assign fg[559:504] = get_fg[9];
-	assign fg[615:560] = get_fg[10];
-	assign fg[671:616] = get_fg[11];
-	assign fg[727:672] = get_fg[12];
-	assign fg[783:728] = get_fg[13];
-	assign fg[839:784] = get_fg[14];
-	assign fg[895:840] = get_fg[15];
 endmodule

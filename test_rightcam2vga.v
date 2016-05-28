@@ -1,4 +1,4 @@
-module test_rightcam2vga(pclk, vsync, href, d, sysclk, vclk, xclk, resetc, vs, hs, r, g, b, test);
+module test_rightcam2vga(pclk, vsync, href, d, sysclk, vclk, xclk, resetc, vs, hs, r, g, b);
 output wire xclk;
 output wire resetc;
 output wire vs;
@@ -6,7 +6,6 @@ output wire hs;
 output wire [2:0] r;
 output wire [2:0] g;
 output wire [2:0] b;
-output wire [2:0] test;
 input pclk;
 input vsync;
 input href;
@@ -36,8 +35,7 @@ rightcam2ram rc2r(
 	.data(data_in),
 	.wraddr(addr_in),
 	.wrclock(clock_in),
-	.wren(en_in),
-	.test(test)
+	.wren(en_in)
 );
 
 rightram rr(

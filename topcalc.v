@@ -2,6 +2,7 @@ module topcalc(clk, d, address_f, address_g, gdata, getfdata);
 	input clk, gdata, getfdata;
 	output d, address_f, address_g;
 	wire clk;
+	wire [2:0] getfdata;
 	wire [10:0] address_f, address_g;
 	wire [5:0] d;
 	wire [5:0] fdata2;

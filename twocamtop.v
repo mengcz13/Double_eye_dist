@@ -1,4 +1,4 @@
-module twocamtop(pclk, vsync, href, d, sysclk, vclk, xclk, resetc, vs, hs, r, g, b);
+module twocamtop(pclk, vsync, href, d, sysclk, vclk, xclk, resetc, vs, hs, r, g, b, dist);
 output wire [1:0] xclk;
 output wire [1:0] resetc;
 output wire vs;
@@ -6,12 +6,15 @@ output wire hs;
 output wire [2:0] r;
 output wire [2:0] g;
 output wire [2:0] b;
+output wire [5:0] dist;
 input [1:0] pclk;
 input [1:0] vsync;
 input [1:0] href;
 input [5:0] d;
 input sysclk;
 input vclk;
+
+wire calcclk;
 
 wire [5:0] data_in;
 wire [31:0] addr_in;
@@ -32,6 +35,11 @@ wire [5:0] data_out_calc;
 wire [21:0] addr_out_calc;
 wire [1:0] clock_out_calc;
 wire [1:0] en_out_calc;
+
+assign en_out_calc = 2'b11;
+assign calcclk = sysclk;
+assign clock_out_calc[0] = calcclk;
+assign clock_out_calc[1] = calcclk;
 
 rightcam2ram rc2r(
 	.pclk(pclk[0]),
@@ -112,6 +120,15 @@ dataram ldram(
 	.wren(en_in_calc[1]),
 	.q(data_out_calc[5:3]),
 	.rden(en_out_calc[1])
+);
+
+topcalc tcalc(
+	.clk(calcclk),
+	.d(dist),
+	.address_f(addr_out_calc[10:0]),
+	.address_g(addr_out_calc[21:11]),
+	.gdata(data_out_calc[5:3]),
+	.getfdata(data_out_calc[2:0])
 );
 
 //rightram2vga rr2v(

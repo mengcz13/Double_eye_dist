@@ -24,6 +24,7 @@ reg pixready;
 
 assign xclk = sysclk;
 assign wrclock = pclk;
+assign wrclock_calc = pclk;
 assign resetc = 1;
 
 //always@(posedge pclk)

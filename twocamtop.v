@@ -23,6 +23,16 @@ wire [31:0] addr_out;
 wire [1:0] clock_out;
 wire [1:0] en_out;
 
+wire [5:0] data_in_calc;
+wire [21:0] addr_in_calc;
+wire [1:0] clock_in_calc;
+wire [1:0] en_in_calc;
+
+wire [5:0] data_out_calc;
+wire [21:0] addr_out_calc;
+wire [1:0] clock_out_calc;
+wire [1:0] en_out_calc;
+
 rightcam2ram rc2r(
 	.pclk(pclk[0]),
 	.vsync(vsync[0]),
@@ -34,7 +44,11 @@ rightcam2ram rc2r(
 	.data(data_in[2:0]),
 	.wraddr(addr_in[15:0]),
 	.wrclock(clock_in[0]),
-	.wren(en_in[0])
+	.wren(en_in[0]),
+	.data_calc(data_in_calc[2:0]),
+	.wraddr_calc(addr_in_calc[10:0]),
+	.wrclock_calc(clock_in_calc[0]),
+	.wren_calc(en_in_calc[0])
 );
 
 rightram rr(
@@ -46,6 +60,17 @@ rightram rr(
 	.wren(en_in[0]),
 	.q(data_out[2:0]),
 	.rden(en_out[0])
+);
+
+dataram rdram(
+	.data(data_in_calc[2:0]),
+	.rdaddress(addr_out_calc[10:0]),
+	.rdclock(clock_out_calc[0]),
+	.wraddress(addr_in_calc[10:0]),
+	.wrclock(clock_in_calc[0]),
+	.wren(en_in_calc[0]),
+	.q(data_out_calc[2:0]),
+	.rden(en_out_calc[0])
 );
 
 
@@ -60,7 +85,11 @@ rightcam2ram lc2r(
 	.data(data_in[5:3]),
 	.wraddr(addr_in[31:16]),
 	.wrclock(clock_in[1]),
-	.wren(en_in[1])
+	.wren(en_in[1]),
+	.data_calc(data_in_calc[5:3]),
+	.wraddr_calc(addr_in_calc[21:11]),
+	.wrclock_calc(clock_in_calc[1]),
+	.wren_calc(en_in_calc[1])
 );
 
 rightram lr(
@@ -72,6 +101,17 @@ rightram lr(
 	.wren(en_in[1]),
 	.q(data_out[5:3]),
 	.rden(en_out[1])
+);
+
+dataram ldram(
+	.data(data_in_calc[5:3]),
+	.rdaddress(addr_out_calc[21:11]),
+	.rdclock(clock_out_calc[1]),
+	.wraddress(addr_in_calc[21:11]),
+	.wrclock(clock_in_calc[1]),
+	.wren(en_in_calc[1]),
+	.q(data_out_calc[5:3]),
+	.rden(en_out_calc[1])
 );
 
 //rightram2vga rr2v(

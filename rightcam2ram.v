@@ -1,10 +1,14 @@
-module rightcam2ram(pclk, vsync, href, d, sysclk, xclk, resetc, data, wraddr, wrclock, wren, test);
+module rightcam2ram(pclk, vsync, href, d, sysclk, xclk, resetc, data, wraddr, wrclock, wren, data_calc, wraddr_calc, wrclock_calc, wren_calc, test);
 output wire xclk;
 output wire resetc;
 output reg [2:0] data;
 output reg [15:0] wraddr;
 output wire wrclock;
 output reg wren;
+output reg [2:0] data_calc;
+output reg [10:0] wraddr_calc;
+output wire wrclock_calc;
+output reg wren_calc;
 output reg [2:0] test;
 input pclk;
 input vsync;
@@ -15,6 +19,7 @@ input sysclk;
 reg [9:0] vector_x;
 reg [8:0] vector_y;
 reg [15:0] nextaddr;
+reg [10:0] nextaddr_calc;
 reg pixready;
 
 assign xclk = sysclk;
@@ -69,6 +74,7 @@ begin
 	end
 end
 
+// Use for display buffer
 always@(posedge pclk)
 begin
 	if (vector_x >= 270 && vector_x <= 369 && vector_y >= 190 && vector_y <= 289)
@@ -110,6 +116,49 @@ begin
 		wren <= 0;
 	end
 	test <= d;
+end
+
+// Use for calculation buffer
+always@(posedge pclk)
+begin
+	if (vector_x >= 318 && vector_x <= 396 && vector_y >= 238 && vector_y <= 253)
+	begin
+		if (pixready == 1)
+		begin
+			wraddr_calc <= nextaddr_calc;
+			nextaddr_calc <= nextaddr_calc + 1;
+			data_calc <= d;
+			//data <= data;
+			// data <= vector_y[2:0];
+			//wren <= 0;
+			wren_calc <= 1;
+		end
+		else
+		begin
+			wraddr_calc <= wraddr_calc;
+			nextaddr_calc <= nextaddr_calc;
+			data_calc <= data_calc;
+			//data <= d;
+			//wren <= 1;
+			wren_calc <= 0;
+		end
+	end
+	else if (vector_y >= 253)
+	begin
+		wraddr_calc <= 0;
+		nextaddr_calc <= 0;
+		//data <= 3'b000;
+		data_calc <= data_calc;
+		wren_calc <= 0;
+	end
+	else
+	begin
+		wraddr_calc <= wraddr_calc;
+		nextaddr_calc <= nextaddr_calc;
+		//data <= 3'b000;
+		data_calc <= data_calc;
+		wren_calc <= 0;
+	end
 end
 
 endmodule

@@ -8,7 +8,7 @@ module topcalcunit(startplace, startsig, work, valid, finalstart, fdata, gdata, 
 	wire [10:0] fsum;
 	wire [2:0] fdata, gdata;
 	wire [5:0] g2data, fgdata;
-	wire [7:0] startplace, place;
+	wire [5:0] startplace, place;
 	wire [10:0] gsum;
 	wire [13:0] g2sum, fgsum, f2sum;
 	wire [13:0] wg, wfg;

@@ -3,7 +3,7 @@ module topcalc(clk, d, address_f, address_g, gdata, getfdata);
 	output d, address_f, address_g;
 	wire clk;
 	wire [10:0] address_f, address_g;
-	wire [7:0] d;
+	wire [5:0] d;
 	wire [5:0] fdata2;
 	wire [2:0] gdata;
 	wire [10:0] fsum;
@@ -20,7 +20,7 @@ module topcalc(clk, d, address_f, address_g, gdata, getfdata);
 	wire update;
 	wire [17:0] bb;
 	wire [17:0] ret[0:30];
-	wire [7:0] place[0:30];
+	wire [5:0] place[0:30];
 	calcfgs control (
 		.gdata(gdata),
 		.getfdata(getfdata),
@@ -57,7 +57,7 @@ module topcalc(clk, d, address_f, address_g, gdata, getfdata);
 	);
 	
 	topcalcunit unit0(
-		.startplace(8'b00000000),
+		.startplace(6'b000000),
 		.startsig(startsig),
 		.work(work),
 		.valid(valid),
@@ -72,7 +72,7 @@ module topcalc(clk, d, address_f, address_g, gdata, getfdata);
 	);
 	
 	topcalcunit unit1(
-		.startplace(8'b00000001),
+		.startplace(6'b000001),
 		.startsig(startsig),
 		.work(work),
 		.valid(valid),
@@ -87,7 +87,7 @@ module topcalc(clk, d, address_f, address_g, gdata, getfdata);
 	);
 	
 	topcalcunit unit2(
-		.startplace(8'b00000010),
+		.startplace(6'b000010),
 		.startsig(startsig),
 		.work(work),
 		.valid(valid),
@@ -102,7 +102,7 @@ module topcalc(clk, d, address_f, address_g, gdata, getfdata);
 	);
 	
 	topcalcunit unit3(
-		.startplace(8'b00000011),
+		.startplace(6'b000011),
 		.startsig(startsig),
 		.work(work),
 		.valid(valid),
@@ -117,7 +117,7 @@ module topcalc(clk, d, address_f, address_g, gdata, getfdata);
 	);
 	
 	topcalcunit unit4(
-		.startplace(8'b00000100),
+		.startplace(6'b000100),
 		.startsig(startsig),
 		.work(work),
 		.valid(valid),
@@ -132,7 +132,7 @@ module topcalc(clk, d, address_f, address_g, gdata, getfdata);
 	);
 	
 	topcalcunit unit5(
-		.startplace(8'b00000101),
+		.startplace(6'b000101),
 		.startsig(startsig),
 		.work(work),
 		.valid(valid),
@@ -147,7 +147,7 @@ module topcalc(clk, d, address_f, address_g, gdata, getfdata);
 	);
 	
 	topcalcunit unit6(
-		.startplace(8'b00000110),
+		.startplace(6'b000110),
 		.startsig(startsig),
 		.work(work),
 		.valid(valid),
@@ -162,7 +162,7 @@ module topcalc(clk, d, address_f, address_g, gdata, getfdata);
 	);
 	
 	topcalcunit unit7(
-		.startplace(8'b00000111),
+		.startplace(6'b000111),
 		.startsig(startsig),
 		.work(work),
 		.valid(valid),
@@ -177,7 +177,7 @@ module topcalc(clk, d, address_f, address_g, gdata, getfdata);
 	);
 	
 	topcalcunit unit8(
-		.startplace(8'b00001000),
+		.startplace(6'b001000),
 		.startsig(startsig),
 		.work(work),
 		.valid(valid),
@@ -192,7 +192,7 @@ module topcalc(clk, d, address_f, address_g, gdata, getfdata);
 	);
 	
 	topcalcunit unit9(
-		.startplace(8'b00001001),
+		.startplace(6'b001001),
 		.startsig(startsig),
 		.work(work),
 		.valid(valid),
@@ -206,7 +206,7 @@ module topcalc(clk, d, address_f, address_g, gdata, getfdata);
 		.place(place[9])
 	);
 	topcalcunit unit10(
-		.startplace(8'b00001010),
+		.startplace(6'b001010),
 		.startsig(startsig),
 		.work(work),
 		.valid(valid),
@@ -220,7 +220,7 @@ module topcalc(clk, d, address_f, address_g, gdata, getfdata);
 		.place(place[10])
 	);
 	topcalcunit unit11(
-		.startplace(8'b00001011),
+		.startplace(6'b001011),
 		.startsig(startsig),
 		.work(work),
 		.valid(valid),
@@ -234,7 +234,7 @@ module topcalc(clk, d, address_f, address_g, gdata, getfdata);
 		.place(place[11])
 	);
 	topcalcunit unit12(
-		.startplace(8'b00001100),
+		.startplace(6'b001100),
 		.startsig(startsig),
 		.work(work),
 		.valid(valid),
@@ -248,7 +248,7 @@ module topcalc(clk, d, address_f, address_g, gdata, getfdata);
 		.place(place[12])
 	);
 	topcalcunit unit13(
-		.startplace(8'b00001101),
+		.startplace(6'b001101),
 		.startsig(startsig),
 		.work(work),
 		.valid(valid),
@@ -262,7 +262,7 @@ module topcalc(clk, d, address_f, address_g, gdata, getfdata);
 		.place(place[13])
 	);
 	topcalcunit unit14(
-		.startplace(8'b00001110),
+		.startplace(6'b001110),
 		.startsig(startsig),
 		.work(work),
 		.valid(valid),
@@ -275,7 +275,7 @@ module topcalc(clk, d, address_f, address_g, gdata, getfdata);
 		.result(ret[14])
 	);
 	topcalcunit unit15(
-		.startplace(8'b00001111),
+		.startplace(8'b001111),
 		.startsig(startsig),
 		.work(work),
 		.valid(valid),
@@ -457,8 +457,8 @@ module topcalc(clk, d, address_f, address_g, gdata, getfdata);
 	finalgive kkk(
 		.startsig(startsig),
 		.update(update),
-		.in(in),
-		.inp(inp),
+		.in(ret[30]),
+		.inp(place[30]),
 		.out(bb),
 		.outp(d)
 	);

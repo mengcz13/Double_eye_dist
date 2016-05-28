@@ -17,7 +17,7 @@ module calcunit(startplace, startsig, work, valid, finalstart, fdata, gdata, g2d
 	reg [13:0] g2sum;
 	reg [10:0] gsum;
 	reg [13:0] fg;
-	reg [7:0] place;
+	reg [5:0] place;
 	
 	reg [13:0] g2sum_con [0:3];
 	reg [10:0] gsum_con [0:3];
@@ -39,9 +39,9 @@ module calcunit(startplace, startsig, work, valid, finalstart, fdata, gdata, g2d
 		else
 		begin
 			case (pt)
-				0:begin pt <= 1; g2sum <= g2sum_con[1]; gsum <= gsum_con[1]; fg <= fg_con[1]; place <= startplace + 8'b00010000; end
-				1:begin pt <= 2; g2sum <= g2sum_con[2]; gsum <= gsum_con[2]; fg <= fg_con[2]; place <= startplace + 8'b00100000; end
-				2:begin pt <= 3; g2sum <= g2sum_con[3]; gsum <= gsum_con[3]; fg <= fg_con[3]; place <= startplace + 8'b00110000; end
+				0:begin pt <= 1; g2sum <= g2sum_con[1]; gsum <= gsum_con[1]; fg <= fg_con[1]; place <= startplace + 6'b010000; end
+				1:begin pt <= 2; g2sum <= g2sum_con[2]; gsum <= gsum_con[2]; fg <= fg_con[2]; place <= startplace + 6'b100000; end
+				2:begin pt <= 3; g2sum <= g2sum_con[3]; gsum <= gsum_con[3]; fg <= fg_con[3]; place <= startplace + 6'b110000; end
 				default: begin pt <= 0; g2sum <= g2sum_con[0]; gsum <= gsum_con[0]; fg <= fg_con[0]; place <= startplace; end
 			endcase	
 		end

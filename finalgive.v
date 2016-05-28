@@ -4,9 +4,9 @@ module finalgive(startsig, update, in, inp, out, outp);
 	
 	wire startsig, update;
 	wire [17:0] in;
-	wire [7:0] inp;
+	wire [5:0] inp;
 	reg [17:0] out;
-	reg [7:0] outp;
+	reg [5:0] outp;
 	reg state;
 	parameter lyx = 1'b1, zh = 1'b0;
 	

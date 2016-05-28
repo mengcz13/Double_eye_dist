@@ -6,10 +6,10 @@ module compare(startsig, finalstart, in1, in2, inp1, inp2, out, outp);
 	wire finalstart;
 	wire [17:0]in1;
 	wire [17:0]in2;
-	wire [7:0]inp1;
-	wire [7:0]inp2;
+	wire [5:0]inp1;
+	wire [5:0]inp2;
 	reg [17:0]out;
-	reg [7:0]outp;
+	reg [5:0]outp;
 	reg state;
 	
 	parameter waiting = 1'b0, working = 1'b1;

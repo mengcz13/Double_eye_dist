@@ -46,7 +46,7 @@ module calcfgs(zero, gdata, getfdata, get2f, clk, fsum, f2sum,
 	begin
 		if (state == starting)
 		begin
-			next <= linestart;
+			next <= clearing;
 			startsig <= 0;
 			vector_y <= 0;
 			vector_xf <= 0;
@@ -84,7 +84,7 @@ module calcfgs(zero, gdata, getfdata, get2f, clk, fsum, f2sum,
 					vector_xg <= 0;
 					vector_xf <= 0;
 					vector_y <= 0;
-					next <= starting;
+					next <= finalcalc;
 					lyx <= 0;
 					finalstart <= 1;
 				end
@@ -183,7 +183,7 @@ module calcfgs(zero, gdata, getfdata, get2f, clk, fsum, f2sum,
 			if (lyx == 3)
 				next <= starting;
 			else
-				next <= calcing;
+				next <= cout;
 			valid <= 0;
 			finalstart <= 0;
 			update <= 1;

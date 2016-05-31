@@ -102,7 +102,7 @@ dataram rdram(
 );
 
 
-rightcam2ram lc2r(
+leftcam2ram lc2r(
 	.pclk(pclk[1]),
 	.vsync(vsync[1]),
 	.href(href[1]),

@@ -1,8 +1,9 @@
-module calcunit(startplace, startsig, work, valid, finalstart, fdata, gdata, g2data, fgdata, change, g2sum, gsum, fg, place);
+module calcunit(startplace, startsig, work, valid, finalstart, fdata, gdata, g2data, fgdata, change, g2sum, gsum, fg, place, test, point);
 	input startplace, startsig, work, change, valid, finalstart;
 	input fdata, gdata, g2data, fgdata;
 	output g2sum, gsum, fg;
 	output place;
+	output test, point;
 	wire startsig;
 	wire work;
 	wire change;
@@ -22,7 +23,7 @@ module calcunit(startplace, startsig, work, valid, finalstart, fdata, gdata, g2d
 	reg [13:0] g2sum_con [0:3];
 	reg [10:0] gsum_con [0:3];
 	reg [13:0] fg_con [0:3];
-	
+	wire [10:0] test;
 	reg [2:0] point;
 	reg [2:0] pt;
 
@@ -114,5 +115,5 @@ module calcunit(startplace, startsig, work, valid, finalstart, fdata, gdata, g2d
 			end
 		end
 	end
-	
+	assign test = gsum_con[0];
 endmodule

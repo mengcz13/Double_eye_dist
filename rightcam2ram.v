@@ -84,7 +84,15 @@ begin
 		begin
 			wraddr <= nextaddr;
 			nextaddr <= nextaddr + 1;
-			data <= d;
+			if (vector_x >= 318 && vector_x <= 396 && vector_y >= 238 && vector_y <= 253)
+				begin
+				if (vector_x >= 318 && vector_x <= 319)
+				data <= 3'b111;
+				else
+				data <= 3'b000;
+				end
+			else
+				data <= d;
 			//data <= data;
 			// data <= vector_y[2:0];
 			//wren <= 0;
@@ -116,7 +124,6 @@ begin
 		data <= data;
 		wren <= 0;
 	end
-	test <= d;
 end
 
 // Use for calculation buffer
@@ -128,10 +135,18 @@ begin
 		begin
 			wraddr_calc <= nextaddr_calc;
 			nextaddr_calc <= nextaddr_calc + 1;
-			data_calc <= d;
+			if (vector_x >= 318 && vector_x <= 319)
+				data_calc <= 3'b111;
+			else
+				data_calc <= 3'b000;
+			//data_calc <= d;
 			//data <= data;
 			// data <= vector_y[2:0];
 			//wren <= 0;
+			if (wraddr_calc == 14)
+				test <= data_calc;
+			else
+				test <= test;
 			wren_calc <= 1;
 		end
 		else

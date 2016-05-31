@@ -1,10 +1,11 @@
-module topcalc(clk, d, address_f, address_g, gdata, getfdata);
+module topcalc(clk, d, zero, address_f, address_g, gdata, getfdata);
 	input clk, gdata, getfdata;
-	output d, address_f, address_g;
+	output d, address_f, address_g, zero;
 	wire clk;
+	wire [2:0] zero;
 	wire [2:0] getfdata;
 	wire [10:0] address_f, address_g;
-	wire [5:0] d;
+	wire [5:0] d, dd;
 	wire [5:0] fdata2;
 	wire [2:0] gdata;
 	wire [10:0] fsum;
@@ -22,7 +23,9 @@ module topcalc(clk, d, address_f, address_g, gdata, getfdata);
 	wire [17:0] bb;
 	wire [17:0] ret[0:30];
 	wire [5:0] place[0:30];
+	
 	calcfgs control (
+		.zero(zero),
 		.gdata(gdata),
 		.getfdata(getfdata),
 		.get2f(fdata2),
@@ -35,6 +38,7 @@ module topcalc(clk, d, address_f, address_g, gdata, getfdata);
 		.change(cg),
 		.startsig(startsig),
 		.work(work),
+		.finalstart(finalstart),
 		.f0(f0),.f1(f1),.f2(f2),.f3(f3),.f4(f4),.f5(f5),.f6(f6),.f7(f7),.f8(f8),.f9(f9),.f10(f10),.f11(f11),
 		.f12(f12),.f13(f13),.f14(f14),.f15(f15), .valid(valid), .update(update)
 	);
@@ -461,6 +465,7 @@ module topcalc(clk, d, address_f, address_g, gdata, getfdata);
 		.in(ret[30]),
 		.inp(place[30]),
 		.out(bb),
-		.outp(d)
+		.outp(dd)
 	);
+	assign d = ret[16][5:0];
 endmodule

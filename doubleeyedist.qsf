@@ -98,9 +98,6 @@ set_global_assignment -name VERILOG_FILE test_rightcam2vga.v
 set_global_assignment -name MIF_FILE output_files/testmif1.mif
 set_global_assignment -name VERILOG_FILE twocamtop.v
 set_global_assignment -name VERILOG_FILE seperate_view.v
-set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
-set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
-set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
 set_global_assignment -name QIP_FILE dataram.qip
 set_location_assignment PIN_168 -to dist[5]
 set_location_assignment PIN_170 -to dist[4]
@@ -108,4 +105,14 @@ set_location_assignment PIN_171 -to dist[3]
 set_location_assignment PIN_173 -to dist[2]
 set_location_assignment PIN_174 -to dist[1]
 set_location_assignment PIN_175 -to dist[0]
+set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
+set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
+set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+set_location_assignment PIN_208 -to zero[2]
+set_location_assignment PIN_203 -to zero[1]
+set_location_assignment PIN_200 -to zero[0]
+set_global_assignment -name MIF_FILE output_files/testright.mif
+set_location_assignment PIN_79 -to test[2]
+set_location_assignment PIN_80 -to test[1]
+set_location_assignment PIN_84 -to test[0]
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

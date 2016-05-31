@@ -1,14 +1,15 @@
-module calcfgs(gdata, getfdata, get2f, clk, fsum, f2sum,
+module calcfgs(zero, gdata, getfdata, get2f, clk, fsum, f2sum,
 					vector_xf, vector_xg, vector_y, change, startsig, work,
 					f0, f1, f2, f3, f4, f5, f6, f7, f8, f9, f10, f11, f12, f13, f14, f15, valid, finalstart, update);
 	input clk, gdata, getfdata, get2f;
 	output f0, f1, f2, f3, f4, f5, f6, f7, f8, f9, f10, f11, f12, f13, f14, f15, fsum, f2sum, finalstart;
 	output vector_xf, vector_xg, vector_y, work, valid, startsig, change, update;
+	output zero;
 	wire clk;
 	reg [10:0] fsum;
 	reg [13:0] f2sum;
 	reg valid, finalstart;
-
+	reg [6:0] zero;
 	reg [3:0] state, next;
 	reg [6:0] vector_xf;
 	reg [6:0] vector_xg;
@@ -38,13 +39,14 @@ module calcfgs(gdata, getfdata, get2f, clk, fsum, f2sum,
 		valid <= 0;
 		finalstart <= 0;
 		update <= 0;
+		zero <= 3'b000;
 	end
 	
 	always@ (posedge clk)
 	begin
 		if (state == starting)
 		begin
-			next <= clearing;
+			next <= linestart;
 			startsig <= 0;
 			vector_y <= 0;
 			vector_xf <= 0;
@@ -82,7 +84,7 @@ module calcfgs(gdata, getfdata, get2f, clk, fsum, f2sum,
 					vector_xg <= 0;
 					vector_xf <= 0;
 					vector_y <= 0;
-					next <= finalcalc;
+					next <= starting;
 					lyx <= 0;
 					finalstart <= 1;
 				end
@@ -136,6 +138,10 @@ module calcfgs(gdata, getfdata, get2f, clk, fsum, f2sum,
 			f13 <= f14;
 			f14 <= f15;
 			f15 <= getfdata;
+			if (vector_xf == 0 && vector_y == 0)
+				zero <= getfdata;
+			else
+				zero <= zero;
 			case (count)
 				 0:change <= 16'b0000000000000001;
 				 1:change <= 16'b0000000000000010;

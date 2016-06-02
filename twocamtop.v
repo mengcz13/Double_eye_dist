@@ -1,4 +1,4 @@
-module twocamtop(pclk, vsync, href, d, sysclk, vclk, xclk, resetc, vs, hs, r, g, b, dist, zero, test);
+module twocamtop(pclk, vsync, href, d, sysclk, vclk, xclk, resetc, vs, hs, r, g, b, bcd1, bcd0, test);
 output wire [1:0] xclk;
 output wire [1:0] resetc;
 output wire vs;
@@ -6,8 +6,8 @@ output wire hs;
 output wire [2:0] r;
 output wire [2:0] g;
 output wire [2:0] b;
-output wire [5:0] dist;
-output wire [2:0] zero;
+output wire [6:0] bcd1;
+output wire [6:0] bcd0;
 output wire [2:0] test;
 input [1:0] pclk;
 input [1:0] vsync;
@@ -15,6 +15,8 @@ input [1:0] href;
 input [5:0] d;
 input sysclk;
 input vclk;
+
+wire [5:0] dist;
 
 wire calcclk;
 
@@ -42,7 +44,8 @@ reg [2:0] count;
 reg clk3;
 
 assign en_out_calc = 2'b11;
-assign calcclk = clk3;
+//assign calcclk = clk3;
+assign calcclk = sysclk;
 assign clock_out_calc[0] = calcclk;
 assign clock_out_calc[1] = calcclk;
 
@@ -142,15 +145,30 @@ dataram ldram(
 	.rden(en_out_calc[1])
 );
 
-topcalc tcalc(
+calc_serial cserial(
 	.clk(calcclk),
-	.d(dist),
-	.address_f(addr_out_calc[10:0]),
-	.address_g(addr_out_calc[21:11]),
+	.fdata(data_out_calc[2:0]),
 	.gdata(data_out_calc[5:3]),
-	.getfdata(data_out_calc[2:0]),
-	.zero(zero)
+	.dist(dist),
+	.address_f(addr_out_calc[10:0]),
+	.address_g(addr_out_calc[21:11])
 );
+
+dist2bcd dbcd(
+	.dist(dist),
+	.bcd1(bcd1),
+	.bcd0(bcd0)
+);
+
+//topcalc tcalc(
+//	.clk(calcclk),
+//	.d(dist),
+//	.address_f(addr_out_calc[10:0]),
+//	.address_g(addr_out_calc[21:11]),
+//	.gdata(data_out_calc[5:3]),
+//	.getfdata(data_out_calc[2:0]),
+//	.zero(zero)
+//);
 
 //rightram2vga rr2v(
 //	.rdaddr(addr_out[31:16]),

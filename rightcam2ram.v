@@ -22,6 +22,9 @@ reg [15:0] nextaddr;
 reg [10:0] nextaddr_calc;
 reg pixready;
 
+reg [5:0] framenum;
+reg pickframe;
+
 assign xclk = sysclk;
 assign wrclock = pclk;
 assign wrclock_calc = pclk;
@@ -31,6 +34,22 @@ assign resetc = 1;
 //begin
 //	hpclk <= ~hpclk;
 //end
+
+always@(posedge vsync)
+begin
+	if (framenum == 29)
+		framenum <= 0;
+	else
+		framenum <= framenum + 1;
+end
+
+always@(posedge pclk)
+begin
+	if (framenum == 29)
+		pickframe <= 1;
+	else
+		pickframe <= 0;
+end
 
 always@(posedge pclk)
 begin
@@ -84,16 +103,19 @@ begin
 		begin
 			wraddr <= nextaddr;
 			nextaddr <= nextaddr + 1;
-			if (vector_x >= 318 && vector_x <= 396 && vector_y >= 238 && vector_y <= 253)
-				begin
-				if (vector_x >= 318 && vector_x <= 319)
-				data <= 3'b111;
-				else
-				data <= 3'b000;
-				end
-			else
-				data <= d;
-			//data <= data;
+//			if (vector_x >= 318 && vector_x <= 396 && vector_y >= 238 && vector_y <= 253)
+//				begin
+//				if (vector_x >= 318 && vector_x <= 319)
+//				data <= 3'b111;
+//				else
+//				data <= 3'b000;
+//				end
+//			else
+//				if (d <= 3)
+//					data <= 0;
+//				else
+//					data <= 7;
+			data <= d;
 			// data <= vector_y[2:0];
 			//wren <= 0;
 			wren <= 1;
@@ -135,11 +157,15 @@ begin
 		begin
 			wraddr_calc <= nextaddr_calc;
 			nextaddr_calc <= nextaddr_calc + 1;
-			if (vector_x >= 318 && vector_x <= 319)
-				data_calc <= 3'b111;
-			else
-				data_calc <= 3'b000;
-			//data_calc <= d;
+//			if (vector_x >= 318 && vector_x <= 319)
+//				data_calc <= 3'b111;
+//			else
+//				data_calc <= 3'b000;
+			data_calc <= d;
+//			if (d <= 3)
+//				data_calc <= 0;
+//			else
+//				data_calc <= 7;
 			//data <= data;
 			// data <= vector_y[2:0];
 			//wren <= 0;
@@ -147,7 +173,7 @@ begin
 				test <= data_calc;
 			else
 				test <= test;
-			wren_calc <= 1;
+			wren_calc <= 1 & pickframe;
 		end
 		else
 		begin

@@ -1,5 +1,9 @@
 module dist2bcd(dist, bcd1, bcd0);
+<<<<<<< HEAD
 input [6:0] dist;
+=======
+input [5:0] dist;
+>>>>>>> 1d8c7e6b82cc99ec651e346b42abbe1a73166042
 output [6:0] bcd1;
 output [6:0] bcd0;
 

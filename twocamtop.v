@@ -16,8 +16,13 @@ input [5:0] d;
 input sysclk;
 input vclk;
 
+<<<<<<< HEAD
 wire [11:0] dist;
 wire [5:0] move;
+=======
+wire [5:0] dist;
+
+>>>>>>> 1d8c7e6b82cc99ec651e346b42abbe1a73166042
 wire calcclk;
 
 wire [5:0] data_in;
@@ -145,8 +150,9 @@ dataram ldram(
 	.rden(en_out_calc[1])
 );
 
-topcalc tcalc(
+calc_serial cserial(
 	.clk(calcclk),
+<<<<<<< HEAD
 	.d(move),
 	.address_f(addr_out_calc[10:0]),
 	.address_g(addr_out_calc[21:11]),
@@ -168,6 +174,17 @@ calcdistance lyx(
 );
 dist2bcd dbcd(
 	.dist(move),
+=======
+	.fdata(data_out_calc[2:0]),
+	.gdata(data_out_calc[5:3]),
+	.dist(dist),
+	.address_f(addr_out_calc[10:0]),
+	.address_g(addr_out_calc[21:11])
+);
+
+dist2bcd dbcd(
+	.dist(dist),
+>>>>>>> 1d8c7e6b82cc99ec651e346b42abbe1a73166042
 	.bcd1(bcd1),
 	.bcd0(bcd0)
 );

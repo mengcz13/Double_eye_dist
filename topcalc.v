@@ -1,8 +1,7 @@
-module topcalc(clk, d, zero, address_f, address_g, gdata, getfdata);
+module topcalc(clk, d, address_f, address_g, gdata, getfdata);
 	input clk, gdata, getfdata;
-	output d, address_f, address_g, zero;
+	output d, address_f, address_g;
 	wire clk;
-	wire [2:0] zero;
 	wire [2:0] getfdata;
 	wire [10:0] address_f, address_g;
 	wire [5:0] d, dd;
@@ -25,7 +24,7 @@ module topcalc(clk, d, zero, address_f, address_g, gdata, getfdata);
 	wire [5:0] place[0:30];
 	
 	calcfgs control (
-		.zero(zero),
+		.lstart(lstart),
 		.gdata(gdata),
 		.getfdata(getfdata),
 		.get2f(fdata2),
@@ -73,7 +72,8 @@ module topcalc(clk, d, zero, address_f, address_g, gdata, getfdata);
 		.f2sum(f2sum),
 		.change(cg[0]),
 		.result(ret[0]),
-		.place(place[0])
+		.place(place[0]),
+		.lstart(lstart)
 	);
 	
 	topcalcunit unit1(
@@ -88,7 +88,8 @@ module topcalc(clk, d, zero, address_f, address_g, gdata, getfdata);
 		.f2sum(f2sum),
 		.change(cg[1]),
 		.result(ret[1]),
-		.place(place[1])
+		.place(place[1]),
+		.lstart(lstart)
 	);
 	
 	topcalcunit unit2(
@@ -103,7 +104,8 @@ module topcalc(clk, d, zero, address_f, address_g, gdata, getfdata);
 		.f2sum(f2sum),
 		.change(cg[2]),
 		.result(ret[2]),
-		.place(place[2])
+		.place(place[2]),
+		.lstart(lstart)
 	);
 	
 	topcalcunit unit3(
@@ -112,13 +114,14 @@ module topcalc(clk, d, zero, address_f, address_g, gdata, getfdata);
 		.work(work),
 		.valid(valid),
 		.finalstart(finalstart),
-		.fdata(f1),
+		.fdata(f3),
 		.gdata(gdata),
 		.fsum(fsum),
 		.f2sum(f2sum),
 		.change(cg[3]),
 		.result(ret[3]),
-		.place(place[3])
+		.place(place[3]),
+		.lstart(lstart)
 	);
 	
 	topcalcunit unit4(
@@ -127,13 +130,14 @@ module topcalc(clk, d, zero, address_f, address_g, gdata, getfdata);
 		.work(work),
 		.valid(valid),
 		.finalstart(finalstart),
-		.fdata(f1),
+		.fdata(f4),
 		.gdata(gdata),
 		.fsum(fsum),
 		.f2sum(f2sum),
 		.change(cg[4]),
 		.result(ret[4]),
-		.place(place[4])
+		.place(place[4]),
+		.lstart(lstart)
 	);
 	
 	topcalcunit unit5(
@@ -142,13 +146,14 @@ module topcalc(clk, d, zero, address_f, address_g, gdata, getfdata);
 		.work(work),
 		.valid(valid),
 		.finalstart(finalstart),
-		.fdata(f1),
+		.fdata(f5),
 		.gdata(gdata),
 		.fsum(fsum),
 		.f2sum(f2sum),
 		.change(cg[5]),
 		.result(ret[5]),
-		.place(place[5])
+		.place(place[5]),
+		.lstart(lstart)
 	);
 	
 	topcalcunit unit6(
@@ -157,13 +162,14 @@ module topcalc(clk, d, zero, address_f, address_g, gdata, getfdata);
 		.work(work),
 		.valid(valid),
 		.finalstart(finalstart),
-		.fdata(f1),
+		.fdata(f6),
 		.gdata(gdata),
 		.fsum(fsum),
 		.f2sum(f2sum),
 		.change(cg[6]),
 		.result(ret[6]),
-		.place(place[6])
+		.place(place[6]),
+		.lstart(lstart)
 	);
 	
 	topcalcunit unit7(
@@ -178,7 +184,8 @@ module topcalc(clk, d, zero, address_f, address_g, gdata, getfdata);
 		.f2sum(f2sum),
 		.change(cg[7]),
 		.result(ret[7]),
-		.place(place[7])
+		.place(place[7]),
+		.lstart(lstart)
 	);
 	
 	topcalcunit unit8(
@@ -193,7 +200,8 @@ module topcalc(clk, d, zero, address_f, address_g, gdata, getfdata);
 		.f2sum(f2sum),
 		.change(cg[8]),
 		.result(ret[8]),
-		.place(place[8])
+		.place(place[8]),
+		.lstart(lstart)
 	);
 	
 	topcalcunit unit9(
@@ -208,7 +216,8 @@ module topcalc(clk, d, zero, address_f, address_g, gdata, getfdata);
 		.f2sum(f2sum),
 		.change(cg[9]),
 		.result(ret[9]),
-		.place(place[9])
+		.place(place[9]),
+		.lstart(lstart)
 	);
 	topcalcunit unit10(
 		.startplace(6'b001010),
@@ -222,7 +231,8 @@ module topcalc(clk, d, zero, address_f, address_g, gdata, getfdata);
 		.f2sum(f2sum),
 		.change(cg[10]),
 		.result(ret[10]),
-		.place(place[10])
+		.place(place[10]),
+		.lstart(lstart)
 	);
 	topcalcunit unit11(
 		.startplace(6'b001011),
@@ -236,7 +246,8 @@ module topcalc(clk, d, zero, address_f, address_g, gdata, getfdata);
 		.f2sum(f2sum),
 		.change(cg[11]),
 		.result(ret[11]),
-		.place(place[11])
+		.place(place[11]),
+		.lstart(lstart)
 	);
 	topcalcunit unit12(
 		.startplace(6'b001100),
@@ -250,7 +261,8 @@ module topcalc(clk, d, zero, address_f, address_g, gdata, getfdata);
 		.f2sum(f2sum),
 		.change(cg[12]),
 		.result(ret[12]),
-		.place(place[12])
+		.place(place[12]),
+		.lstart(lstart)
 	);
 	topcalcunit unit13(
 		.startplace(6'b001101),
@@ -264,7 +276,8 @@ module topcalc(clk, d, zero, address_f, address_g, gdata, getfdata);
 		.f2sum(f2sum),
 		.change(cg[13]),
 		.result(ret[13]),
-		.place(place[13])
+		.place(place[13]),
+		.lstart(lstart)
 	);
 	topcalcunit unit14(
 		.startplace(6'b001110),
@@ -277,7 +290,8 @@ module topcalc(clk, d, zero, address_f, address_g, gdata, getfdata);
 		.fsum(fsum),
 		.f2sum(f2sum),
 		.change(cg[14]),
-		.result(ret[14])
+		.result(ret[14]),
+		.lstart(lstart)
 	);
 	topcalcunit unit15(
 		.startplace(8'b001111),
@@ -291,12 +305,11 @@ module topcalc(clk, d, zero, address_f, address_g, gdata, getfdata);
 		.f2sum(f2sum),
 		.change(cg[15]),
 		.result(ret[15]),
-		.place(place[15])
+		.place(place[15]),
+		.lstart(lstart)
 	);
 	
 	compare c0(
-		.startsig(startsig),
-		.finalstart(finalstart),
 		.in1(ret[0]),
 		.in2(ret[1]),
 		.inp1(place[0]),
@@ -306,8 +319,6 @@ module topcalc(clk, d, zero, address_f, address_g, gdata, getfdata);
 	);
 	
 	compare c1(
-		.startsig(startsig),
-		.finalstart(finalstart),
 		.in1(ret[2]),
 		.in2(ret[3]),
 		.inp1(place[2]),
@@ -317,8 +328,6 @@ module topcalc(clk, d, zero, address_f, address_g, gdata, getfdata);
 	);
 	
 	compare c2(
-		.startsig(startsig),
-		.finalstart(finalstart),
 		.in1(ret[4]),
 		.in2(ret[5]),
 		.inp1(place[4]),
@@ -328,8 +337,6 @@ module topcalc(clk, d, zero, address_f, address_g, gdata, getfdata);
 	);
 	
 	compare c3(
-		.startsig(startsig),
-		.finalstart(finalstart),
 		.in1(ret[6]),
 		.in2(ret[7]),
 		.inp1(place[6]),
@@ -339,8 +346,6 @@ module topcalc(clk, d, zero, address_f, address_g, gdata, getfdata);
 	);
 	
 	compare c4(
-		.startsig(startsig),
-		.finalstart(finalstart),
 		.in1(ret[8]),
 		.in2(ret[9]),
 		.inp1(place[8]),
@@ -350,8 +355,6 @@ module topcalc(clk, d, zero, address_f, address_g, gdata, getfdata);
 	);
 	
 	compare c5(
-		.startsig(startsig),
-		.finalstart(finalstart),
 		.in1(ret[10]),
 		.in2(ret[11]),
 		.inp1(place[10]),
@@ -361,8 +364,6 @@ module topcalc(clk, d, zero, address_f, address_g, gdata, getfdata);
 	);
 	
 	compare c6(
-		.startsig(startsig),
-		.finalstart(finalstart),
 		.in1(ret[12]),
 		.in2(ret[13]),
 		.inp1(place[12]),
@@ -372,8 +373,6 @@ module topcalc(clk, d, zero, address_f, address_g, gdata, getfdata);
 	);
 	
 	compare c7(
-		.startsig(startsig),
-		.finalstart(finalstart),
 		.in1(ret[14]),
 		.in2(ret[15]),
 		.inp1(place[14]),
@@ -383,8 +382,6 @@ module topcalc(clk, d, zero, address_f, address_g, gdata, getfdata);
 	);
 	
 	compare c8(
-		.startsig(startsig),
-		.finalstart(finalstart),
 		.in1(ret[16]),
 		.in2(ret[17]),
 		.inp1(place[16]),
@@ -394,8 +391,6 @@ module topcalc(clk, d, zero, address_f, address_g, gdata, getfdata);
 	);
 	
 	compare c9(
-		.startsig(startsig),
-		.finalstart(finalstart),
 		.in1(ret[18]),
 		.in2(ret[19]),
 		.inp1(place[18]),
@@ -405,8 +400,6 @@ module topcalc(clk, d, zero, address_f, address_g, gdata, getfdata);
 	);
 	
 	compare c10(
-		.startsig(startsig),
-		.finalstart(finalstart),
 		.in1(ret[20]),
 		.in2(ret[21]),
 		.inp1(place[20]),
@@ -416,8 +409,6 @@ module topcalc(clk, d, zero, address_f, address_g, gdata, getfdata);
 	);
 	
 	compare c11(
-		.startsig(startsig),
-		.finalstart(finalstart),
 		.in1(ret[22]),
 		.in2(ret[23]),
 		.inp1(place[22]),
@@ -427,8 +418,6 @@ module topcalc(clk, d, zero, address_f, address_g, gdata, getfdata);
 	);
 	
 	compare c12(
-		.startsig(startsig),
-		.finalstart(finalstart),
 		.in1(ret[24]),
 		.in2(ret[25]),
 		.inp1(place[24]),
@@ -438,8 +427,6 @@ module topcalc(clk, d, zero, address_f, address_g, gdata, getfdata);
 	);
 	
 	compare c13(
-		.startsig(startsig),
-		.finalstart(finalstart),
 		.in1(ret[26]),
 		.in2(ret[27]),
 		.inp1(place[26]),
@@ -449,8 +436,6 @@ module topcalc(clk, d, zero, address_f, address_g, gdata, getfdata);
 	);
 	
 	compare c14(
-		.startsig(startsig),
-		.finalstart(finalstart),
 		.in1(ret[28]),
 		.in2(ret[29]),
 		.inp1(place[28]),
@@ -467,5 +452,5 @@ module topcalc(clk, d, zero, address_f, address_g, gdata, getfdata);
 		.out(bb),
 		.outp(dd)
 	);
-	assign d = ret[16][5:0];
+	assign d = dd;
 endmodule

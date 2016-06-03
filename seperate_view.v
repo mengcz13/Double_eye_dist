@@ -77,9 +77,24 @@ begin
 	begin
 		if (vector_x >= 370 && vector_x <= 469 && vector_y >= 290 && vector_y <= 389)
 		begin
+			if (vector_x >= 412 && vector_x <= 427 && (vector_y == 332 || vector_y == 347))
+				begin
+				r <= 3'b111;
+				g <= 0;
+				b <= 0;
+				end
+			else if (vector_y >= 332 && vector_y <= 347 && (vector_x == 412 || vector_x == 427))
+				begin
+				r <= 3'b111;
+				g <= 0;
+				b <= 0;
+				end
+			else
+			begin
 			r <= datar;
 			g <= datar;
 			b <= datar;
+			end
 			rdaddrr <= nextaddrr;
 			nextaddrr <= nextaddrr + 1;
 			rdenr <= 1;

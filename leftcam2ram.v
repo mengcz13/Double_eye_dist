@@ -1,4 +1,4 @@
-module rightcam2ram(pclk, vsync, href, d, sysclk, xclk, resetc, data, wraddr, wrclock, wren, data_calc, wraddr_calc, wrclock_calc, wren_calc, test);
+module leftcam2ram(pclk, vsync, href, d, sysclk, xclk, resetc, data, wraddr, wrclock, wren, data_calc, wraddr_calc, wrclock_calc, wren_calc, test);
 output wire xclk;
 output wire resetc;
 output reg [2:0] data;
@@ -105,7 +105,7 @@ begin
 			nextaddr <= nextaddr + 1;
 //			if (vector_x >= 318 && vector_x <= 396 && vector_y >= 238 && vector_y <= 253)
 //				begin
-//				if (vector_x >= 318 && vector_x <= 319)
+//				if (vector_x >= 328 && vector_x <= 329)
 //				data <= 3'b111;
 //				else
 //				data <= 3'b000;
@@ -157,12 +157,12 @@ begin
 		begin
 			wraddr_calc <= nextaddr_calc;
 			nextaddr_calc <= nextaddr_calc + 1;
-//			if (vector_x >= 318 && vector_x <= 319)
+//			if (vector_x >= 328 && vector_x <= 329)
 //				data_calc <= 3'b111;
 //			else
 //				data_calc <= 3'b000;
 			data_calc <= d;
-//			if (d <= 3)
+//			if (d  <= 3)
 //				data_calc <= 0;
 //			else
 //				data_calc <= 7;

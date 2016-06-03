@@ -7,6 +7,8 @@ module finalgive(startsig, update, in, inp, out, outp);
 	wire [5:0] inp;
 	reg [17:0] out;
 	reg [5:0] outp;
+	reg [17:0] tmp;
+	reg [5:0] tmpp;
 	reg state;
 	parameter lyx = 1'b1, zh = 1'b0;
 	
@@ -15,26 +17,28 @@ module finalgive(startsig, update, in, inp, out, outp);
 		if (startsig == 1)
 		begin
 			state <= lyx;
+			out <= tmp;
+			outp <= tmpp;
 		end
 		else
 		begin
 			if (state == lyx)
 			begin
-				out <= in;
-				outp <= inp;
+				tmp <= in;
+				tmpp <= inp;
 				state <= zh;
 			end
 			else
 			begin
-				if (in < out)
+				if (in < tmp)
 				begin
-					out <= in;
-					outp <= inp;
+					tmp <= in;
+					tmpp <= inp;
 				end
 				else
 				begin
-					out <= out;
-					outp <= outp;
+					tmp <= tmp;
+					tmpp <= tmpp;
 				end
 			end
 		end

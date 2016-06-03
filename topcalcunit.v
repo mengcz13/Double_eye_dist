@@ -1,17 +1,17 @@
-module topcalcunit(startplace, startsig, work, valid, finalstart, fdata, gdata, fsum, f2sum, change, result, place);
+module topcalcunit(lstart, startplace, startsig, work, valid, finalstart, fdata, gdata, fsum, f2sum, change, result, place);
 	input startsig, work, valid, finalstart, fdata, gdata, change;
 	input fsum, f2sum;
-	input startplace;
+	input startplace, lstart;
 	output result, place;
 	
-	wire startsig, work, valid, finalstart, change;
+	wire startsig, work, valid, finalstart, change, lstart;
 	wire [10:0] fsum;
 	wire [2:0] fdata, gdata;
 	wire [5:0] g2data, fgdata;
 	wire [5:0] startplace, place;
 	wire [10:0] gsum;
 	wire [13:0] g2sum, fgsum, f2sum;
-	wire [13:0] wg, wfg;
+	wire [13:0] wg, wfg, wf;
 	wire [17:0] result;
 	calcunit unit(
 		.startplace(startplace),
@@ -27,7 +27,8 @@ module topcalcunit(startplace, startsig, work, valid, finalstart, fdata, gdata, 
 		.change(change),
 		.gsum(gsum),
 		.g2sum(g2sum),
-		.fg(fgsum)
+		.fg(fgsum),
+		.lstart(lstart)
 	);
 	
 	multiple m1(

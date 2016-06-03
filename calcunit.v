@@ -1,13 +1,14 @@
-module calcunit(startplace, startsig, work, valid, finalstart, fdata, gdata, g2data, fgdata, change, g2sum, gsum, fg, place);
-	input startplace, startsig, work, change, valid, finalstart;
+module calcunit(lstart, startplace, startsig, work, valid, finalstart, fdata, gdata, g2data, fgdata, change, g2sum, gsum, fg, place, test, point);
+	input lstart, startplace, startsig, work, change, valid, finalstart;
 	input fdata, gdata, g2data, fgdata;
 	output g2sum, gsum, fg;
 	output place;
+	output test, point;
 	wire startsig;
 	wire work;
 	wire change;
 	wire valid;
-	
+	wire lstart;
 	wire [7:0] startplace;
 	wire [2:0] fdata;
 	wire [2:0] gdata;
@@ -22,7 +23,7 @@ module calcunit(startplace, startsig, work, valid, finalstart, fdata, gdata, g2d
 	reg [13:0] g2sum_con [0:3];
 	reg [10:0] gsum_con [0:3];
 	reg [13:0] fg_con [0:3];
-	
+	wire [10:0] test;
 	reg [2:0] point;
 	reg [2:0] pt;
 
@@ -47,8 +48,13 @@ module calcunit(startplace, startsig, work, valid, finalstart, fdata, gdata, g2d
 		end
 	end
 	
-	always@(posedge work or posedge startsig)
-	begin	
+	always@(posedge work or posedge startsig or posedge lstart)
+	begin
+		if (lstart == 1)
+		begin
+			point <= 4;
+		end
+		else
 		if (startsig == 1)
 		begin
 			g2sum_con[0] <= 0; gsum_con[0] <= 0; fg_con[0] <= 0;
@@ -65,23 +71,23 @@ module calcunit(startplace, startsig, work, valid, finalstart, fdata, gdata, g2d
 					0: 
 					begin 
 						point <= 1;
-						gsum_con[1] <= gdata;
-						g2sum_con[1] <= g2data;
-						fg_con[1] <= fgdata;
+						gsum_con[1] <= gsum_con[1] + gdata;
+						g2sum_con[1] <= g2sum_con[1] + g2data;
+						fg_con[1] <= fg_con[1] + fgdata;
 					end
 					1:
 					begin 
 						point <= 2;
-						gsum_con[2] <= gdata;
-						g2sum_con[2] <= g2data;
-						fg_con[2] <= fgdata;
+						gsum_con[2] <= gsum_con[2] + gdata;
+						g2sum_con[2] <= g2sum_con[2] + g2data;
+						fg_con[2] <= fg_con[2] + fgdata;
 					end
 					2:
 					begin 
 						point <= 3;
-						gsum_con[3] <= gdata;
-						g2sum_con[3] <= g2data;
-						fg_con[3] <= fgdata;
+						gsum_con[3] <= gsum_con[3] + gdata;
+						g2sum_con[3] <= g2sum_con[3] + g2data;
+						fg_con[3] <= fg_con[3] + fgdata;
 					end
 					3:
 					begin
@@ -90,9 +96,9 @@ module calcunit(startplace, startsig, work, valid, finalstart, fdata, gdata, g2d
 					4:
 					begin 
 						point <= 0;
-						gsum_con[0] <= gdata;
-						g2sum_con[0] <= g2data;
-						fg_con[0] <= fgdata;
+						gsum_con[0] <= gsum_con[0] + gdata;
+						g2sum_con[0] <= g2sum_con[0] + g2data;
+						fg_con[0] <= fg_con[0] + fgdata;
 					end
 					default:point <= point;
 				endcase
@@ -114,5 +120,5 @@ module calcunit(startplace, startsig, work, valid, finalstart, fdata, gdata, g2d
 			end
 		end
 	end
-	
+	assign test = fg_con[1];
 endmodule

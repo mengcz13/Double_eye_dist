@@ -105,17 +105,19 @@ begin
 			nextaddr <= nextaddr + 1;
 //			if (vector_x >= 318 && vector_x <= 396 && vector_y >= 238 && vector_y <= 253)
 //				begin
-//				if (vector_x >= 318 && vector_x <= 319)
+//				if (vector_x >= 319 && vector_x <= 320)
 //				data <= 3'b111;
 //				else
 //				data <= 3'b000;
 //				end
 //			else
+				data <= d;
+//			else
 //				if (d <= 3)
 //					data <= 0;
 //				else
 //					data <= 7;
-			data <= d;
+//			data <= d;
 			// data <= vector_y[2:0];
 			//wren <= 0;
 			wren <= 1;
@@ -157,7 +159,7 @@ begin
 		begin
 			wraddr_calc <= nextaddr_calc;
 			nextaddr_calc <= nextaddr_calc + 1;
-//			if (vector_x >= 318 && vector_x <= 319)
+//			if (vector_x >= 319 && vector_x <= 320)
 //				data_calc <= 3'b111;
 //			else
 //				data_calc <= 3'b000;

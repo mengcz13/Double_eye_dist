@@ -291,6 +291,7 @@ module topcalc(clk, d, address_f, address_g, gdata, getfdata);
 		.f2sum(f2sum),
 		.change(cg[14]),
 		.result(ret[14]),
+		.place(place[14]),
 		.lstart(lstart)
 	);
 	topcalcunit unit15(

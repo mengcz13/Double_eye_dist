@@ -45,19 +45,19 @@ module topcalcunit(lstart, startplace, startsig, work, valid, finalstart, fdata,
 	
 	movemultiple mm1(
 		.in11(gsum),
-		.in3(gsum[10:8]),
+		.in3(gsum),
 		.out(wg)
 	);
 	
 	movemultiple mm2(
 		.in11(gsum),
-		.in3(fsum[10:8]),
+		.in3(fsum),
 		.out(wfg)
 	);
 	
 	movemultiple mm3(
 		.in11(fsum),
-		.in3(fsum[10:8]),
+		.in3(fsum),
 		.out(wf)
 	);
 	

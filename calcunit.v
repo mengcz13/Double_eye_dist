@@ -1,10 +1,5 @@
-<<<<<<< HEAD
 module calcunit(lstart, startplace, startsig, work, valid, finalstart, fdata, gdata, g2data, fgdata, change, g2sum, gsum, fg, place, test, point);
 	input lstart, startplace, startsig, work, change, valid, finalstart;
-=======
-module calcunit(startplace, startsig, work, valid, finalstart, fdata, gdata, g2data, fgdata, change, g2sum, gsum, fg, place, test, point);
-	input startplace, startsig, work, change, valid, finalstart;
->>>>>>> 1d8c7e6b82cc99ec651e346b42abbe1a73166042
 	input fdata, gdata, g2data, fgdata;
 	output g2sum, gsum, fg;
 	output place;
@@ -125,9 +120,5 @@ module calcunit(startplace, startsig, work, valid, finalstart, fdata, gdata, g2d
 			end
 		end
 	end
-<<<<<<< HEAD
 	assign test = fg_con[1];
-=======
-	assign test = gsum_con[0];
->>>>>>> 1d8c7e6b82cc99ec651e346b42abbe1a73166042
 endmodule

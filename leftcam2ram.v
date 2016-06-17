@@ -1,3 +1,29 @@
+/* 
+---------------------------------------------------------------------------------------------
+--创建日期: 2016-06-06
+--目标芯片: EP2C20Q240C8
+--时钟选择: sysclk接24MHz时钟, pclk为摄像头输入的像素时钟信号
+--演示说明: 无法演示
+--主要信号说明:
+xclk: 为摄像头提供的工作时钟信号
+resetc: 摄像头复位信号
+data: 输出像素数据(供显示用)
+wraddr: 供显示用RAM写入地址
+wrclock: 供显示用RAM写入时钟
+wren: 供显示用RAM写入使能
+data_calc: 输出像素数据(供计算用)
+wraddr_calc: 供计算用RAM写入地址
+wrclock_calc: 供计算用RAM写入时钟
+wren_calc: 供计算用RAM写入使能
+pclk: 摄像头提供的像素时钟
+vsync: 摄像头提供的场同步信号
+href: 摄像头提供的行同步信号
+d: 摄像头数据输入
+sysclk: 系统时钟, 接24MHz
+--主要进程说明: 显示进程, 将摄像头数据读入片内RAM, 供VGA显示电路读取; 数据读取进程, 将摄像头数据读入片内RAM, 供计算模块读取(与前者对应的画面位置不同)
+--------------------------------------------------------------------------------------------- 
+*/
+
 module leftcam2ram(pclk, vsync, href, d, sysclk, xclk, resetc, data, wraddr, wrclock, wren, data_calc, wraddr_calc, wrclock_calc, wren_calc, test);
 output wire xclk;
 output wire resetc;

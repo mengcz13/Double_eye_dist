@@ -1,4 +1,6 @@
 module coorcalc(x, y, z);
+//坐标换算，输入图像的x与y坐标输出对应像素在RAM中对应的一维地址
+//邹昊写
 	input x, y;
 	output z;
 	wire [6:0] x;

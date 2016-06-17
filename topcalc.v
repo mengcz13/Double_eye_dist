@@ -1,4 +1,6 @@
 module topcalc(clk, d, address_f, address_g, gdata, getfdata);
+//顶层计算模块
+//邹昊写
 	input clk, gdata, getfdata;
 	output d, address_f, address_g;
 	wire clk;
@@ -22,7 +24,7 @@ module topcalc(clk, d, address_f, address_g, gdata, getfdata);
 	wire [17:0] bb;
 	wire [17:0] ret[0:30];
 	wire [5:0] place[0:30];
-	
+	//控制模块
 	calcfgs control (
 		.lstart(lstart),
 		.gdata(gdata),
@@ -41,7 +43,7 @@ module topcalc(clk, d, address_f, address_g, gdata, getfdata);
 		.f0(f0),.f1(f1),.f2(f2),.f3(f3),.f4(f4),.f5(f5),.f6(f6),.f7(f7),.f8(f8),.f9(f9),.f10(f10),.f11(f11),
 		.f12(f12),.f13(f13),.f14(f14),.f15(f15), .valid(valid), .update(update)
 	);
-
+//将图像中的x、y坐标转化为RAM中的坐标输出
 	coorcalc coor0(
 		.x(vxf),
 		.y(vy),
@@ -59,7 +61,7 @@ module topcalc(clk, d, address_f, address_g, gdata, getfdata);
 		.in2(getfdata),
 		.out(fdata2)
 	);
-	
+//16个计算单元	
 	topcalcunit unit0(
 		.startplace(6'b000000),
 		.startsig(startsig),
@@ -309,7 +311,7 @@ module topcalc(clk, d, address_f, address_g, gdata, getfdata);
 		.place(place[15]),
 		.lstart(lstart)
 	);
-	
+//31个并行比较器	
 	compare c0(
 		.in1(ret[0]),
 		.in2(ret[1]),
@@ -444,7 +446,7 @@ module topcalc(clk, d, address_f, address_g, gdata, getfdata);
 		.out(ret[30]),
 		.outp(place[30])
 	);
-	
+//最后的串行比较器	
 	finalgive kkk(
 		.startsig(startsig),
 		.update(update),

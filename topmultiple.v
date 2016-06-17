@@ -102,7 +102,7 @@ module topmultiple(fsum, gsum0, gsum1, gsum2, gsum3, gsum4, gsum5, gsum6, gsum7,
 	movemultiple tg17(
 	.in11(gsum1[21:11]),
 	.in3(gsum1[21:19]),
-	.out(wg1[27:14])
+	.out(wg1[27:14]) 
 	);
 	movemultiple tg18(
 	.in11(gsum2[21:11]),

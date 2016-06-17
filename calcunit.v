@@ -1,4 +1,6 @@
 module calcunit(lstart, startplace, startsig, work, valid, finalstart, fdata, gdata, g2data, fgdata, change, g2sum, gsum, fg, place, test, point);
+//计算单元，串行计算4个窗口的fg交叉乘积和、g平方和和g的和，最后串行输出
+//邹昊写
 	input lstart, startplace, startsig, work, change, valid, finalstart;
 	input fdata, gdata, g2data, fgdata;
 	output g2sum, gsum, fg;
@@ -20,13 +22,13 @@ module calcunit(lstart, startplace, startsig, work, valid, finalstart, fdata, gd
 	reg [13:0] fg;
 	reg [5:0] place;
 	
-	reg [13:0] g2sum_con [0:3];
-	reg [10:0] gsum_con [0:3];
-	reg [13:0] fg_con [0:3];
+	reg [13:0] g2sum_con [0:3]; //存储四个窗口的g平方和
+	reg [10:0] gsum_con [0:3]; //存储四个窗口的g的和
+	reg [13:0] fg_con [0:3]; //存储四个窗口的fg交叉乘积和
 	wire [10:0] test;
-	reg [2:0] point;
-	reg [2:0] pt;
-
+	reg [2:0] point; //指针，记录当前在计算那个窗口
+	reg [2:0] pt; //指针，记录串行输出阶段当前在输出那个窗口
+	//串行输出阶段，从finalstart的上升沿开始，valid的上升沿就切换下一个窗口
 	always @(posedge valid or posedge finalstart)
 	begin
 		if (finalstart == 1)
@@ -47,7 +49,7 @@ module calcunit(lstart, startplace, startsig, work, valid, finalstart, fdata, gd
 			endcase	
 		end
 	end
-	
+	//计算阶段
 	always@(posedge work or posedge startsig or posedge lstart)
 	begin
 		if (lstart == 1)

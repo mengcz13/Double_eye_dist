@@ -79,6 +79,8 @@
 //	assign out = tmp[21:8];
 //endmodule
 module movemultiple(in11, in3, out);
+//11位二进制乘3位二进制后，除以256（窗口大小）
+//邹昊写
 	input in11, in3;
 	output out;
 	wire [10:0] in11;

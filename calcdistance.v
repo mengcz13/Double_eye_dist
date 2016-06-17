@@ -1,4 +1,6 @@
 module calcdistance(in, out);
+//将匹配的窗口位移转化为距离
+//邹昊写
 	input in;
 	output out;
 	wire [5:0] in;

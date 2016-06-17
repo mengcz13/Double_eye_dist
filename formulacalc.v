@@ -1,4 +1,6 @@
-module formulacalc(wf, f2sum, g2sum, wg, wfg, fg, result);
+ module formulacalc(wf, f2sum, g2sum, wg, wfg, fg, result);
+ //给定fsum^2/size,gsum^2/size,fsum*gsum/size,g平方和、f平方和、fg交叉乘积和输出ZSSD匹配值
+ //邹昊写
 	input wf, f2sum, g2sum, wg, wfg, fg;
 	output result;
 	wire [13:0] wf;

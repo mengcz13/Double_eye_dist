@@ -1,4 +1,6 @@
 module compare(in1, in2, inp1, inp2, out, outp);
+//输入两个窗口的匹配度和它们的位移值，输出较小的匹配度和对应窗口的位移值
+//邹昊写
 	input in1, in2, inp1, inp2;
 	output out, outp;
 	wire [17:0]in1;

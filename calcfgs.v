@@ -1,6 +1,9 @@
 module calcfgs(gdata, getfdata, get2f, clk, fsum, f2sum, lstart,
 					vector_xf, vector_xg, vector_y, change, startsig, work,
 					f0, f1, f2, f3, f4, f5, f6, f7, f8, f9, f10, f11, f12, f13, f14, f15, valid, finalstart, update);
+//并行计算控制模块，包括了f窗口的f和与f平方和计算
+//g窗口从左到右编号为0到63，分成16组。(0,16,32,48)、(1,17,33,49)...，组内串行，组间并行
+//邹昊写
 	input clk, gdata, getfdata, get2f;
 	output f0, f1, f2, f3, f4, f5, f6, f7, f8, f9, f10, f11, f12, f13, f14, f15, fsum, f2sum, finalstart;
 	output vector_xf, vector_xg, vector_y, work, valid, startsig, change, update, lstart;
@@ -39,9 +42,10 @@ module calcfgs(gdata, getfdata, get2f, clk, fsum, f2sum, lstart,
 		update <= 0;
 		lstart <= 0;
 	end
-	
+	//状态机，有9个状态
 	always@ (posedge clk)
 	begin
+		//开始状态，从头开始计算一个f窗口和64个g窗口的匹配值，做一些初始化工作
 		if (state == starting)
 		begin
 			next <= clearing;
@@ -55,14 +59,14 @@ module calcfgs(gdata, getfdata, get2f, clk, fsum, f2sum, lstart,
 			valid <= 0;
 			update <= 0;
 		end 
-		else if (state == clearing)
+		else if (state == clearing) //清空状态，清空后面16个计算单元的原始计算值
 		begin
 			next <= linestart;
-			startsig <= 1;
+			startsig <= 1; //清空信号，上升沿触发
 		end
-		else if (state == linestart)
+		else if (state == linestart) //行开始状态
 		begin
-			lstart <= 1;
+			lstart <= 1; //行开始信号，发送给16个计算单元
 			startsig <= 0;
 			count <= 0;
 			next <= waiting1;
@@ -70,17 +74,17 @@ module calcfgs(gdata, getfdata, get2f, clk, fsum, f2sum, lstart,
 			vector_xg <= 0;
 			flag <= 0;
 		end
-		else if (state == waiting1)
+		else if (state == waiting1) //给定RAM的读取等待数据到来的状态
 		begin
 			next <= waiting2;
 			lstart <= 0;
 			work <= 0;
 		end
-		else if (state == waiting3)
+		else if (state == waiting3) //一步计算完成，更新像素坐标
 		begin
-			if (vector_xg == 78)
+			if (vector_xg == 78) //换行
 			begin
-				if (vector_y == 15)
+				if (vector_y == 15) //整个窗口计算完毕
 				begin
 					vector_xg <= 0;
 					vector_xf <= 0;
@@ -90,7 +94,7 @@ module calcfgs(gdata, getfdata, get2f, clk, fsum, f2sum, lstart,
 					finalstart <= 1;
 				end
 				else
-				begin
+				begin //下一行
 					vector_y <= vector_y + 1;
 					vector_xg <= 0;
 					vector_xf <= 0;
@@ -119,7 +123,7 @@ module calcfgs(gdata, getfdata, get2f, clk, fsum, f2sum, lstart,
 			else
 				count <= count + 1;
 		end 
-		else if (state == waiting2)
+		else if (state == waiting2) //数据到来完成，更新16个计算单元各自读取的f像素值
 		begin
 			next <= calcing;
 			work <= 0;
@@ -159,7 +163,7 @@ module calcfgs(gdata, getfdata, get2f, clk, fsum, f2sum, lstart,
 				default:change <= 16'b0000000000000001;
 			endcase
 		end
-		else if (state == calcing)
+		else if (state == calcing) //计算状态
 		begin
 			next <= waiting3;
 			work <= 1;
@@ -175,7 +179,7 @@ module calcfgs(gdata, getfdata, get2f, clk, fsum, f2sum, lstart,
 				f2sum <= f2sum;
 			end
 		end
-		else if (state == finalcalc)
+		else if (state == finalcalc) //整个窗口计算完毕，进入串行输出状态
 		begin
 			if (lyx == 3)
 				next <= starting;

@@ -1,4 +1,6 @@
 module multiple(in1, in2, out);
+//两个三位二进制数的乘法
+//邹昊写
 	input in1, in2;
 	output out;
 	wire [2:0] in1;
